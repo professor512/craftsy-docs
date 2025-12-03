@@ -1,0 +1,378 @@
+/* src/styles/editor.css */
+
+/* layout */
+.editor-container {
+  max-width: 900px;
+  margin: 32px auto;
+  padding: 20px;
+  /* background: #fefefe; */
+  border-radius: 8px;
+  /* box-shadow: 0 1px 4px rgba(16, 24, 40, 0.04);   */
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial;
+}
+
+.editor-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  
+}
+
+.editor-title {
+  margin: 0;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #111827;
+}
+
+/* Save button */
+.save-button {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #374151;
+  background: #111827;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+/* editor area */
+.editor-area {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 12px;
+  min-height: 420px;
+  background: #ffffff;
+  border-radius: 6px;
+  padding: 16px;
+  margin-top: 20px;
+}
+
+/* the area that ProseMirror mounts into */
+.editor-content {
+  min-height: 300px;
+  outline: none;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #0f172a;
+}
+
+/* basic content styling for headings and paragraphs inside editor */
+.editor-content h1 {
+  font-size: 1.6rem;
+  margin: 0.5rem 0;
+}
+
+.editor-content h2 {
+  font-size: 1.25rem;
+  margin: 0.4rem 0;
+}
+
+.editor-content p {
+  margin: 0.5rem 0;
+}
+
+/* lists */
+.editor-content ul,
+.editor-content ol {
+  margin: 0.5rem 0 0.5rem 1.25rem;
+}
+/* appended for Sprint 2 */
+
+/* code block styling (simple, no syntax highlight) */
+.editor-content pre {
+  background: #0f172a;
+  color: #e6eef8;
+  padding: 12px;
+  border-radius: 6px;
+  overflow: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+  font-size: 0.9rem;
+  margin: 0.6rem 0;
+}
+.editor-content code {
+  background: rgba(0,0,0,0.04);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: ui-monospace, Menlo, Monaco, monospace;
+}
+
+/* images inside editor */
+.editor-content img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0.5rem 0;
+}
+
+
+
+.callout-box {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #fef3c7;
+  border-left: 4px solid #facc15;
+  margin: 12px 0;
+}
+
+.callout-emoji {
+  font-size: 1.3rem;
+}
+
+.callout-content {
+  flex: 1;
+}
+
+
+.block-handle {
+  opacity: 0;
+  cursor: grab;
+  padding: 4px;
+  margin-left: -32px;
+  user-select: none;
+  font-size: 18px;
+  color: #9ca3af;
+  position: absolute;
+  left: 0;
+  top: 8px;
+  transition: opacity 0.1s;
+}
+
+.ProseMirror > *:hover .block-handle {
+  opacity: 1;
+}
+
+/* block handle */
+.block-handle {
+  position: absolute;
+  left: -36px;
+  top: 6px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  background: transparent;
+  color: #9ca3af;
+  cursor: grab;
+  user-select: none;
+  font-size: 16px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s, color 0.12s;
+}
+
+/* show handle when hovering the block (ProseMirror nodes are direct children) */
+.ProseMirror > *:hover .block-handle {
+  background: rgba(15, 23, 42, 0.04);
+  color: #374151;
+}
+
+/* ensure editor area gives space for handles */
+.editor-container {
+  position: relative;
+  padding-left: 46px; /* to make room for handles */
+}
+/* block handle */
+.block-handle {
+  position: absolute;
+  left: -36px;
+  top: 6px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  background: transparent;
+  color: #9ca3af;
+  cursor: grab;
+  user-select: none;
+  font-size: 16px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s, color 0.12s;
+}
+
+/* show handle when hovering the block (ProseMirror nodes are direct children) */
+.ProseMirror > *:hover .block-handle {
+  background: rgba(15, 23, 42, 0.04);
+  color: #374151;
+}
+
+/* ensure editor area gives space for handles */
+.editor-container {
+  position: relative;
+  padding-left: 46px; /* to make room for handles */
+}
+
+.version-history {
+  width: 320px;
+  padding: 12px;
+  background: #fff;
+  border-left: 1px solid #e5e7eb;
+  height: 100vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+.version-history h4 { margin: 0 0 8px 0; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Topbar improvement: editor-actions, hf-group, dropdowns, etc. */
+
+/* editor-actions container (replaces inline flex wrapper) */
+.editor-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 6px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(250,250,252,0.95), rgba(250,250,252,0.7));
+  border: 1px solid rgba(15,23,42,0.03);
+  max-width: calc(100% - 320px);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Save / primary button */
+.save-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: none;
+  background: linear-gradient(180deg, #06b6d4, #0891b2);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* Secondary buttons */
+.save-button.secondary {
+  background: transparent;
+  color: #0f1724;
+  border: 1px solid #e6e9ee;
+  font-weight: 600;
+}
+
+/* Outline style used for dropdown toggles */
+.save-button.outline {
+  background: transparent;
+  color: #0f1724;
+  border: 1px dashed rgba(15,23,42,0.06);
+}
+
+/* header/footer group */
+.hf-group {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-left: 6px;
+  flex-shrink: 0;
+}
+
+/* header/footer inputs */
+.hf-input {
+  min-width: 140px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #e6e9ee;
+  background: #fff;
+  font-size: 0.92rem;
+  color: #0f1724;
+}
+
+/* dropdown wrapper */
+.dropdown {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+/* dropdown menu */
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 10px);
+  width: 220px;
+  background: #fff;
+  border: 1px solid rgba(10,12,16,0.06);
+  border-radius: 10px;
+  box-shadow: 0 12px 40px rgba(8,15,30,0.08);
+  padding: 6px;
+  z-index: 60;
+  box-sizing: border-box;
+  opacity: 0;
+  transform-origin: top right;
+  transform: translateY(-8px) scale(0.98);
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+
+/* menu item */
+.dropdown-menu .menu-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: transparent;
+  border: none;
+  text-align: left;
+  font-size: 0.95rem;
+  color: #0f1724;
+  cursor: pointer;
+}
+
+/* hover state for menu items */
+.dropdown-menu .menu-item:hover {
+  background: rgba(6,182,212,0.06);
+}
+
+/* show menu on hover OR focus-within (keyboard accessible) */
+.dropdown:hover .dropdown-menu,
+.dropdown:focus-within .dropdown-menu {
+  display: block;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* small responsive tweaks */
+@media (max-width: 880px) {
+  .editor-actions { max-width: 100%; padding: 6px; }
+  .hf-input { min-width: 120px; }
+  .dropdown-menu { right: 6px; width: 200px; }
+}
+
+@media (max-width: 640px) {
+  .editor-topbar { flex-direction: column; align-items: stretch; gap: 12px; }
+  .editor-actions { width: 100%; justify-content: flex-start; }
+  .hf-group { width: 100%; }
+  .hf-input { flex: 1 1 140px; }
+}
