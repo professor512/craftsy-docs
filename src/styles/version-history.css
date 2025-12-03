@@ -1,0 +1,184 @@
+/* src/styles/version-history.css
+   Modern VersionHistory styles to match RightPanel theme
+*/
+
+:root {
+  --vh-bg: #ffffff;
+  --vh-muted: #6b7280;
+  --vh-border: #e7e9ec;
+  --vh-radius: 12px;
+  --vh-shadow: 0 10px 30px rgba(12,16,20,0.06);
+  --vh-accent: #111827;
+}
+
+/* card base */
+.vh-card {
+  background: linear-gradient(180deg, rgba(250,250,252,0.8), #fff);
+  border-radius: var(--vh-radius);
+  padding: 12px;
+  border: 1px solid rgba(12,16,20,0.03);
+  box-shadow: var(--vh-shadow);
+  box-sizing: border-box;
+}
+
+/* header */
+.vh-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.vh-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--vh-accent);
+}
+.vh-sub {
+  font-size: 0.82rem;
+  color: var(--vh-muted);
+  margin-top: 4px;
+}
+
+/* header actions */
+.vh-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* buttons */
+.vh-btn {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #fafafc;
+  color: var(--vh-accent);
+  border: 1px solid var(--vh-border);
+  font-weight: 700;
+  cursor: pointer;
+}
+.vh-btn svg { color: #9aa0a6; }
+
+/* primary filled */
+.vh-btn.primary {
+  background: linear-gradient(180deg, var(--vh-accent), #222);
+  color: #fff;
+  border: none;
+  box-shadow: 0 8px 24px rgba(6,6,8,0.12);
+}
+.vh-btn.primary svg { color: #fff; }
+
+/* ghost / refresh */
+.vh-btn.ghost {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--vh-muted);
+  padding: 8px;
+}
+
+/* outline-ghost for destructive action */
+.vh-btn.outline-ghost {
+  background: transparent;
+  border: 1px solid rgba(12,12,12,0.06);
+  color: var(--vh-accent);
+  padding: 8px;
+}
+
+/* list */
+.vh-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* empty state */
+.vh-empty {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  padding: 18px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #fbfbfb, #fff);
+  border: 1px dashed #f1f1f1;
+  color: var(--vh-muted);
+  text-align: center;
+}
+.vh-empty-text { font-weight: 700; color: var(--vh-accent); }
+.vh-empty-sub { font-size: 0.9rem; color: var(--vh-muted); }
+
+/* each snapshot item */
+.vh-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid rgba(12,16,20,0.03);
+  box-shadow: 0 8px 22px rgba(12,16,20,0.02);
+}
+
+/* main text */
+.vh-item-main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.vh-item-title {
+  font-weight: 700;
+  color: var(--vh-accent);
+  margin-bottom: 4px;
+}
+.vh-item-ts {
+  font-size: 0.85rem;
+  color: var(--vh-muted);
+}
+
+/* actions icons to right */
+.vh-item-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* small icon button */
+.vh-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--vh-muted);
+  cursor: pointer;
+  transition: background .12s, transform .12s;
+}
+.vh-icon-btn:hover { background: rgba(15,23,42,0.04); transform: translateY(-2px); }
+
+/* destructive */
+.vh-icon-btn.danger {
+  color: #b91c1c;
+}
+.vh-icon-btn.danger:hover { background: rgba(185,28,28,0.06); }
+
+/* make the list scroll within the panel safely */
+.version-history-wrapper .vh-list,
+.vh-list {
+  max-height: calc(100vh - 420px);
+  overflow: auto;
+  padding-right: 6px;
+  box-sizing: border-box;
+}
+
+/* small responsiveness */
+@media (max-width: 1000px) {
+  .vh-card { padding: 10px; }
+  .vh-btn { padding: 7px 8px; }
+  .vh-item { padding: 8px; }
+}

@@ -1,0 +1,407 @@
+/* src/styles/right-panel.css
+   Modern, seamless RightPanel visuals with lucide icons
+   Neutral grayscale palette (no blue), soft elevation, compact components
+*/
+
+/* design tokens */
+:root {
+  --panel-bg: #ffffff;
+  --muted: #6b7280;
+  --muted-2: #9aa0a6;
+  --border: #e7e9ec;
+  --panel-radius: 12px;
+  --card-radius: 12px;
+  --shadow-soft: 0 8px 28px rgba(12, 16, 20, 0.06);
+  --shadow-strong: 0 18px 60px rgba(8, 15, 30, 0.12);
+  --accent-dark: #0b0b0b;
+  --accent-2: #111827;
+}
+
+/* panel container */
+.right-panel {
+  flex: 0 0 320px;
+  width: 320px;
+  padding: 18px;
+  background: var(--panel-bg);
+  border-left: 1px solid var(--border);
+  box-sizing: border-box;
+  height: 100vh;
+  overflow-y: auto;
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 40;
+  align-self: flex-start;
+}
+
+/* card base */
+.panel-card {
+  border-radius: var(--card-radius);
+  background: linear-gradient(180deg, rgba(250,250,252,0.8), #fff);
+  padding: 12px;
+  box-shadow: var(--shadow-soft);
+  border: 1px solid rgba(12, 16, 20, 0.03);
+}
+
+/* header area inside card */
+.panel-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+/* title & subtitle */
+.panel-title {
+  font-weight: 700;
+  font-size: 0.98rem;
+  color: var(--accent-2);
+  line-height: 1;
+}
+.panel-sub {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-top: 3px;
+}
+
+/* controls row */
+.panel-controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* action buttons (primary & default) */
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #fafafc;
+  color: var(--accent-2);
+  border: 1px solid var(--border);
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: transform 140ms ease, box-shadow 140ms ease, background 120ms;
+}
+.action-btn svg { color: var(--muted-2); }
+
+/* primary (filled dark) */
+.action-btn.primary {
+  background: linear-gradient(180deg, var(--accent-dark), #222);
+  color: #fff;
+  border: none;
+  box-shadow: 0 10px 30px rgba(6,6,8,0.12);
+}
+.action-btn.primary svg { color: #fff; }
+
+/* ghost / compact variant for Export/Import toggles */
+.action-btn.ghost {
+  background: transparent;
+  border: 1px dashed rgba(12,12,12,0.06);
+  color: var(--accent-2);
+  padding-right: 12px;
+}
+
+/* small separator between groups */
+.action-sep {
+  width: 1px;
+  height: 36px;
+  background: var(--border);
+  border-radius: 2px;
+  margin-left: 4px;
+  margin-right: 4px;
+  flex-shrink: 0;
+}
+
+/* icon button (small circle) */
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background .12s, transform .12s;
+}
+.icon-btn:hover { background: rgba(15,23,42,0.04); transform: translateY(-2px); }
+
+/* chip toggle */
+.chip {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #f6f7f8;
+  color: var(--muted);
+  font-weight: 700;
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+.chip-on {
+  background: linear-gradient(180deg, #f3f6f8, #fff);
+  color: var(--accent-2);
+  box-shadow: 0 6px 18px rgba(12,16,20,0.04);
+}
+
+/* snapshots area */
+.snapshots.hidden { display: none; }
+.snapshots.visible { display: block; margin-top: 6px; }
+
+/* placeholder when snapshots hidden */
+.snapshots-empty {
+  color: var(--muted);
+  font-size: 0.92rem;
+  padding: 12px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #fbfbfb, #ffffff);
+  border: 1px dashed #f1f1f1;
+}
+
+/* version history wrapper (keeps existing component contained) */
+.version-history-wrapper {
+  margin-top: 8px;
+  max-height: calc(100vh - 320px);
+  overflow: auto;
+  padding-right: 6px;
+}
+
+/* modal styles (portal) */
+.rp-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(6, 10, 18, 0.48);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10050;
+  padding: 24px;
+}
+.rp-modal {
+  width: 560px;
+  max-width: calc(100% - 48px);
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: var(--shadow-strong);
+  overflow: hidden;
+  border: 1px solid rgba(10,12,16,0.06);
+}
+.rp-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(10,12,16,0.04);
+  background: linear-gradient(180deg, #fff, #fbfbfb);
+}
+.rp-modal-title {
+  font-weight: 700;
+  color: var(--accent-2);
+  font-size: 1rem;
+}
+.rp-modal-close {
+  background: transparent;
+  border: none;
+  padding: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--muted);
+  border-radius: 8px;
+}
+.rp-modal-close:hover { background: rgba(15,23,42,0.04); }
+.rp-modal-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* modal action buttons */
+.modal-action {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(10,12,16,0.04);
+  background: #fff;
+  cursor: pointer;
+  text-align: left;
+  font-weight: 700;
+  color: var(--accent-2);
+  transition: background .12s, transform .12s;
+}
+.modal-action svg { color: var(--muted-2); }
+.modal-action:hover { background: rgba(15,23,42,0.04); transform: translateY(-2px); }
+
+/* responsive: collapse right panel below 1000px optionally */
+@media (max-width: 1000px) {
+  .right-panel { display: none; }
+  .version-history-wrapper { max-height: 300px; }
+}
+
+
+
+
+
+
+
+/* ==========================================================================
+   Icon-only RightPanel Buttons with Hover Tooltips (matches toolbar)
+   ========================================================================== */
+
+/* Hide text labels inside action buttons */
+.action-btn > span {
+  display: none !important;
+}
+
+/* Make all action-btns icon-sized */
+.action-btn {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  justify-content: center;
+  border-radius: 8px;
+  position: relative;
+}
+
+/* Hover background like toolbar */
+.action-btn:hover {
+  background: rgba(15, 23, 42, 0.07);
+  transform: translateY(-1px);
+}
+
+/* Tooltip (same style as toolbar) */
+.action-btn[title]:hover::after,
+.action-btn[title]:focus::after {
+  content: attr(title);
+  position: absolute;
+  bottom: -38px;             /* below button */
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+
+  background: #0f172a;
+  color: white;
+  padding: 6px 10px;
+  font-size: 0.75rem;
+
+  border-radius: 6px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+  pointer-events: none;
+  z-index: 99999;
+}
+
+/* Tooltip caret */
+.action-btn[title]:hover::before,
+.action-btn[title]:focus::before {
+  content: "";
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #0f172a;
+  pointer-events: none;
+  z-index: 99999;
+}
+
+/* Icon-only small circle buttons (trash, restore, etc.) */
+.icon-btn {
+  position: relative;
+}
+
+.icon-btn[title]:hover::after,
+.icon-btn[title]:focus::after {
+  content: attr(title);
+  position: absolute;
+  bottom: -36px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0f172a;
+  color: #fff;
+  padding: 5px 8px;
+  font-size: 0.74rem;
+  border-radius: 6px;
+  white-space: nowrap;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+  z-index: 99999;
+}
+
+.icon-btn[title]:hover::before,
+.icon-btn[title]:focus::before {
+  content: "";
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #0f172a;
+  z-index: 99999;
+}
+
+/* Chips can also show tooltip */
+.chip {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  position: relative;
+  justify-content: center;
+}
+
+.chip span {
+  display: none !important;
+}
+
+.chip[title]:hover::after,
+.chip[title]:focus::after {
+  content: attr(title);
+  position: absolute;
+  bottom: -38px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #0f172a;
+  color: #fff;
+  padding: 6px 10px;
+  font-size: 0.75rem;
+  border-radius: 6px;
+  white-space: nowrap;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+  z-index: 99999;
+}
+
+.chip[title]:hover::before,
+.chip[title]:focus::before {
+  content: "";
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #0f172a;
+}
+
+
+/* Hide chevron arrow inside action buttons */
+.action-btn .chevron {
+  display: none !important;
+}

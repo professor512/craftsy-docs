@@ -37,11 +37,11 @@ import { templates } from "../templates";
 import { htmlToMarkdown, markdownToHtml } from "../utils/markdown";
 import { BlockHandles } from "../extensions/BlockHandles";
 
-import VersionHistory from "./VersionHistory";
+// import VersionHistory from "./VersionHistory";
 import { saveSnapshot } from "../utils/history"; // <-- Make sure this import exists
 
 import { downloadFile, buildA4Html } from "../utils/export";
-
+import RightPanel from "./RightPanel";
 
 const STORAGE_KEY = "craftsy-doc-1";
 
@@ -230,18 +230,18 @@ const DocumentEditor: React.FC = () => {
     }, 400);
   };
 
-// replace handleExportDocx in DocumentEditor.tsx
-const handleExportDocx = async () => {
-  if (!editor) return;
-  const html = editor.getHTML();
+  // replace handleExportDocx in DocumentEditor.tsx
+  const handleExportDocx = async () => {
+    if (!editor) return;
+    const html = editor.getHTML();
 
-  // Build a full HTML wrapper (similar to buildA4Html)
-  const docHtml = `<!doctype html><html><head><meta charset="utf-8"><title>Document</title></head><body>${headerHtml}${html}${footerHtml}</body></html>`;
+    // Build a full HTML wrapper (similar to buildA4Html)
+    const docHtml = `<!doctype html><html><head><meta charset="utf-8"><title>Document</title></head><body>${headerHtml}${html}${footerHtml}</body></html>`;
 
-  // Download as .doc (Word can open HTML content saved with .doc)
-  const blob = new Blob([docHtml], { type: "application/msword" });
-  downloadFile("document.doc", blob, "application/msword");
-};
+    // Download as .doc (Word can open HTML content saved with .doc)
+    const blob = new Blob([docHtml], { type: "application/msword" });
+    downloadFile("document.doc", blob, "application/msword");
+  };
 
 
 
@@ -253,59 +253,9 @@ const handleExportDocx = async () => {
       {/* Center: Main Editor Area */}
       <div className="editor-container" style={{ flex: 1 }}>
         {/* Topbar — paste this in place of your current .editor-topbar block */}
-<div className="editor-topbar">
-  <h3 className="editor-title">Craftsy — Document Editor</h3>
-
-  <div className="editor-actions" aria-label="Editor actions">
-
-    <button className="save-button" onClick={handleSave} aria-label="Save document">
-      Save
-    </button>
-
-    <button className="save-button secondary" onClick={handleInsertTemplate} aria-label="Insert template">
-      Insert Template
-    </button>
-
-    {/* Header / Footer inputs */}
-    <div className="hf-group" aria-label="Header and footer">
-      <input
-        value={headerHtml}
-        onChange={(e) => setHeaderHtml(e.target.value)}
-        placeholder="Header HTML"
-        className="hf-input"
-      />
-      <input
-        value={footerHtml}
-        onChange={(e) => setFooterHtml(e.target.value)}
-        placeholder="Footer HTML"
-        className="hf-input"
-      />
-    </div>
-
-    {/* Export dropdown (hover / focus) */}
-    <div className="dropdown export-dropdown" tabIndex={0} aria-haspopup="true" aria-label="Export options">
-      <button className="save-button outline" aria-expanded="false">Export ▾</button>
-
-      <div className="dropdown-menu" role="menu" aria-label="Export menu">
-        <button className="menu-item" onClick={handleExportMD} role="menuitem">Export MD</button>
-        <button className="menu-item" onClick={handleExportHTML} role="menuitem">Export HTML</button>
-        <button className="menu-item" onClick={handlePrintPdf} role="menuitem">Print / Export PDF</button>
-        <button className="menu-item" onClick={handleExportDocx} role="menuitem">Export DOCX</button>
-      </div>
-    </div>
-
-    {/* Import dropdown */}
-    <div className="dropdown import-dropdown" tabIndex={0} aria-haspopup="true" aria-label="Import options">
-      <button className="save-button outline" aria-expanded="false">Import ▾</button>
-
-      <div className="dropdown-menu" role="menu" aria-label="Import menu">
-        <button className="menu-item" onClick={handleImportMD} role="menuitem">Import MD</button>
-        {/* add more import items here if needed */}
-      </div>
-    </div>
-
-  </div>
-</div>
+        <div className="editor-topbar">
+          <h3 className="editor-title">Craftsy — Document Editor</h3>
+        </div>
 
 
         <EditorToolbar editor={editor} />
@@ -329,7 +279,20 @@ const handleExportDocx = async () => {
       </div>
 
       {/* Right: Version History */}
-      <VersionHistory editor={editor} />
+      {/* Right: Actions + Version History in a single panel */}
+<RightPanel
+  editor={editor}
+  handleSave={handleSave}
+  handleInsertTemplate={handleInsertTemplate}
+  handleExportMD={handleExportMD}
+  handleExportHTML={handleExportHTML}
+  handlePrintPdf={handlePrintPdf}
+  handleExportDocx={handleExportDocx}
+  handleImportMD={handleImportMD}
+  // optionally pass a delete handler:
+  // handleDeleteAllSnapshots={myDeleteFn}
+ />
+
     </div>
   );
 

@@ -4,7 +4,14 @@ import type { Editor } from "@tiptap/react";
 import { v4 as uuidv4 } from "uuid";
 import type { Snapshot } from "../utils/history";
 import { loadHistory, saveSnapshot, deleteSnapshot } from "../utils/history";
-
+import {
+  PlusCircle,
+  RotateCw,
+  Trash2,
+  ChevronRight,
+  FileText,
+} from "lucide-react";
+import "../styles/version-history.css";
 
 type Props = { editor: Editor | null };
 
@@ -13,8 +20,16 @@ const formatTs = (ts: number) => new Date(ts).toLocaleString();
 const VersionHistory: React.FC<Props> = ({ editor }) => {
   const [list, setList] = React.useState<Snapshot[]>([]);
 
+  // load once
   React.useEffect(() => {
     setList(loadHistory());
+  }, []);
+
+  // refresh on global event (RightPanel fallback deletion dispatches this)
+  React.useEffect(() => {
+    const handler = () => setList(loadHistory());
+    window.addEventListener("snapshotsCleared", handler);
+    return () => window.removeEventListener("snapshotsCleared", handler);
   }, []);
 
   const createSnapshot = () => {
@@ -43,42 +58,62 @@ const VersionHistory: React.FC<Props> = ({ editor }) => {
     setList(loadHistory());
   };
 
+  const clearAll = () => {
+    if (!confirm("Clear all snapshots? This will remove all saved snapshots.")) return;
+    localStorage.removeItem("craftsy-doc-history");
+    setList([]);
+    window.dispatchEvent(new Event("snapshotsCleared"));
+  };
+
   if (!editor) return null;
 
   return (
-    <div className="version-history">
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <h4 style={{ margin: 0 }}>History</h4>
+    <div className="vh-card">
+      <div className="vh-header">
         <div>
-          <button onClick={createSnapshot} className="save-button" style={{ marginRight: 8 }}>
-            Save Snapshot
+          <h4 className="vh-title">History</h4>
+          <div className="vh-sub">Saved snapshots</div>
+        </div>
+
+        <div className="vh-actions">
+          <button className="vh-btn primary" onClick={createSnapshot} title="Save snapshot">
+            <PlusCircle size={14} />
+            <span>Save</span>
           </button>
-          <button
-            className="save-button"
-            onClick={() => {
-              if (!confirm("Clear all snapshots?")) return;
-              localStorage.removeItem("craftsy-doc-history");
-              setList([]);
-            }}
-          >
-            Clear
+
+          <button className="vh-btn ghost" onClick={() => setList(loadHistory())} title="Refresh list">
+            <RotateCw size={14} />
+          </button>
+
+          <button className="vh-btn outline-ghost" onClick={clearAll} title="Clear all">
+            <Trash2 size={14} />
           </button>
         </div>
       </div>
 
-      <div style={{ marginTop: 8 }}>
+      <div className="vh-list">
         {list.length === 0 ? (
-          <div style={{ color: "#6b7280" }}>No snapshots</div>
+          <div className="vh-empty">
+            <FileText size={20} />
+            <div className="vh-empty-text">No snapshots</div>
+            <div className="vh-empty-sub">Click Save to create your first snapshot.</div>
+          </div>
         ) : (
           list.map((s) => (
-            <div key={s.id} style={{ padding: 8, borderBottom: "1px solid #eee", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 600 }}>{s.title}</div>
-                <div style={{ fontSize: 12, color: "#6b7280" }}>{formatTs(s.ts)}</div>
+            <div key={s.id} className="vh-item">
+              <div className="vh-item-main">
+                <div className="vh-item-title">{s.title}</div>
+                <div className="vh-item-ts">{formatTs(s.ts)}</div>
               </div>
-              <div style={{ display: "flex", gap: 6 }}>
-                <button onClick={() => restore(s)} className="toolbar-button">Restore</button>
-                <button onClick={() => remove(s.id)} className="toolbar-button">Delete</button>
+
+              <div className="vh-item-actions">
+                <button className="vh-icon-btn" title="Restore" onClick={() => restore(s)}>
+                  <ChevronRight size={14} />
+                </button>
+
+                <button className="vh-icon-btn danger" title="Delete" onClick={() => remove(s.id)}>
+                  <Trash2 size={14} />
+                </button>
               </div>
             </div>
           ))
